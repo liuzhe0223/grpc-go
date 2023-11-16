@@ -83,8 +83,10 @@ func init() {
 	internal.JoinServerOptions = newJoinServerOption
 }
 
-var statusOK = status.New(codes.OK, "")
-var logger = grpclog.Component("core")
+var (
+	statusOK = status.New(codes.OK, "")
+	logger   = grpclog.Component("core")
+)
 
 type methodHandler func(srv any, ctx context.Context, dec func(any) error, interceptor UnaryServerInterceptor) (any, error)
 
@@ -2069,7 +2071,7 @@ func validateSendCompressor(name, clientCompressors string) error {
 	}
 
 	for _, c := range strings.Split(clientCompressors, ",") {
-		if c == name {
+		if strings.TrimSpace(c) == name {
 			return nil // found match
 		}
 	}
